@@ -1,27 +1,7 @@
-#include "Vertex.h"
+#include "Vertex.h";
 
-Vertex::Vertex()
+Vertex::Vertex(int label)
 {
-    this->index = -1;
-    this->degree = -1;
-}
-
-int Vertex::getIndex()
-{
-    return this->index;
-}
-
-int Vertex::getDegree()
-{
-    return this->degree;
-}
-
-void Vertex::setIndex(int index)
-{
-    this->index = index;
-}
-
-void Vertex::setDegree(int deg)
-{
-    this->degree = deg;
+    this->label = label;
+    this->degree = 0;
 }

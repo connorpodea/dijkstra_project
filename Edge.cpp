@@ -1,21 +1,15 @@
-#include "Edge.h"
+#include "Edge.h";
 
-Edge::Edge(){
-    this->startVert = -1;
-    this->endVert = -1;
-    this->weight = -1;
+Edge::Edge()
+{
+    this->vertex1 = nullptr;
+    this->vertex2 = nullptr;
+    this->weight = INT_MAX;
 }
 
-Edge::Edge(int start, int end){
-    this->startVert = start;
-    this->endVert = end;
-    this->weight = 1;
-}
-
-int Edge::getWeight(){
-    return this->weight;
-}
-
-void Edge::setWeight(int newWeight){
-    this->weight = newWeight;
+Edge::Edge(Vertex *vertex1, Vertex *vertex2, int weight)
+{
+    this->vertex1 = vertex1;
+    this->vertex2 = vertex2;
+    this->weight = weight;
 }

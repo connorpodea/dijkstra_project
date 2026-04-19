@@ -1,24 +1,29 @@
-#include "Edge.h"
 #include <iostream>
+#include "Graph.h";
+#include "Vertex.h"
+#include "Edge.h";
 
 int main()
 {
 
     // start of the initial pipeline that loads the test case file stream from std::cin
-
-    int numOfVertices;
-    int numOfEdges;
+    int num_verticies;
+    int num_edges;
 
     if (!std::cin.eof())
     {
-        std::cin >> numOfVertices;
-        std::cin >> numOfEdges;
+        std::cin >> num_verticies;
+        std::cin >> num_edges;
     }
     else
     {
         std::cout << "Input not found!" << std::endl;
         return NULL;
     }
+
+    // initialize the graph
+    Graph *g = new Graph(num_verticies, num_edges);
+    int insertion_index = 0;
 
     while (!std::cin.eof())
     {
@@ -28,11 +33,11 @@ int main()
         std::cin >> startVertice;
         std::cin >> endVertice;
         std::cin >> weight;
-        Edge *newEdge = new Edge(startVertice, endVertice);
-        newEdge->setWeight(weight);
-        // Here is where you load up the Graph object
+
+        // load up the Graph object
+        Vertex *startVertice = new Vertex(startVertice);
+        Vertex *endVertice = new Vertex(endVertice);
     }
 
     return 0;
 }
-
