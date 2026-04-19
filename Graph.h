@@ -1,18 +1,14 @@
-#include "Vertex.h";
-#include "Edge.h";
-
 class Graph
 {
 private:
     int num_verticies;
-    Vertex **vertices;
-
     int num_edges;
-    Edge **edges;
+    int *adjacency_matrix;
 
 public:
-    Graph(int num_verticies, int num_edges);
+    Graph(int num_verticies);
 
-    void add_vertex(Vertex *vertex);
-    void add_edge(Edge *edge);
+    void update_adjacency_matrix(int vertex1, int vertex2, int weight);
+    void print_adjacency_matrix();
+    void print_odd_degrees();
 };

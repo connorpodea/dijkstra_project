@@ -1,7 +1,5 @@
 #include <iostream>
-#include "Graph.h";
-#include "Vertex.h"
-#include "Edge.h";
+#include "Graph.h"
 
 int main()
 {
@@ -18,26 +16,39 @@ int main()
     else
     {
         std::cout << "Input not found!" << std::endl;
-        return NULL;
+        return -1;
     }
 
     // initialize the graph
-    Graph *g = new Graph(num_verticies, num_edges);
-    int insertion_index = 0;
+
+    // *** testing out a different approach ***
+    // Graph *g = new Graph(num_verticies, num_edges);
+
+    Graph *g = new Graph(num_verticies);
 
     while (!std::cin.eof())
     {
-        int startVertice;
-        int endVertice;
+        int vertex1;
+        int vertex2;
         int weight;
-        std::cin >> startVertice;
-        std::cin >> endVertice;
+        std::cin >> vertex1;
+        std::cin >> vertex2;
         std::cin >> weight;
 
         // load up the Graph object
-        Vertex *startVertice = new Vertex(startVertice);
-        Vertex *endVertice = new Vertex(endVertice);
+
+        // *** testing out a different approach ***
+        // Vertex *start_vertex = new Vertex(vertex1);
+        // Vertex *end_vertex = new Vertex(vertex2);
+
+        // g->add_vertex(start_vertex);
+        // g->add_vertex(end_vertex);
+        // g->add_edge(new Edge(start_vertex, end_vertex, weight));
+
+        g->update_adjacency_matrix(vertex1, vertex2, weight);
     }
+
+    g->print_adjacency_matrix();
 
     return 0;
 }
