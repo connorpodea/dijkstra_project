@@ -11,9 +11,9 @@ public:
 
     void update_adjacency_matrix(int vertex1, int vertex2, int weight);
     int *find_odd_degrees();
-    int *perform_dijkstras();
+    int *perform_dijkstras(int vertex);
 
     void print_adjacency_matrix();
     void print_odd_degrees(int *odd_degrees);
-    void print_dijkstras(int *vertecies);
+    void print_dijkstras(int starting_vertex, int *path);
 };

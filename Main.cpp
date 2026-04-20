@@ -39,9 +39,22 @@ int main()
         g->update_adjacency_matrix(vertex1, vertex2, weight);
     }
 
+    // ***** task 1 *****
     g->print_adjacency_matrix();
-    g->print_odd_degrees(g->find_odd_degrees());
-    g->print_dijkstras(g->perform_dijkstras());
+
+    // ***** task 2 *****
+    int *odd_degrees = g->find_odd_degrees();
+    int odd_degree_count = odd_degrees[0];
+    g->print_odd_degrees(odd_degrees);
+
+    // ***** task 3 *****
+    // loop through each odd-degree vertex, calling perform dijkstras and print dijkstras
+    for (int i = 1; i <= odd_degree_count; i++)
+    {
+        int starting_vertex = odd_degrees[i];
+        int *dijkstras_path = g->perform_dijkstras(starting_vertex);
+        g->print_dijkstras(starting_vertex, dijkstras_path);
+    }
 
     return 0;
 }

@@ -55,7 +55,7 @@ int *Graph::find_odd_degrees()
     return odd_degrees;
 }
 
-int Graph::*perform_dijkstras()
+int Graph::*perform_dijkstras(int starting_vertex)
 {
 }
 
@@ -88,6 +88,13 @@ void Graph::print_odd_degrees(int *odd_degrees)
     std::cout << "}" << std::endl;
 }
 
-void Graph::print_dijkstras(int *vertecies)
+void Graph::print_dijkstras(int starting_vertex, int *path)
 {
+    std::cout << "The shortest path lengths from Node " << starting_vertex << " to all other nodes are:" << std::endl;
+
+    int path_length = path[0];
+    for (int i = 1; i <= path_length; i++)
+    {
+        std::cout << i << " " << path[i] << " " << std::endl;
+    }
 }
