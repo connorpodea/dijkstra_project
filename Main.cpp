@@ -36,19 +36,12 @@ int main()
         std::cin >> weight;
 
         // load up the Graph object
-
-        // *** testing out a different approach ***
-        // Vertex *start_vertex = new Vertex(vertex1);
-        // Vertex *end_vertex = new Vertex(vertex2);
-
-        // g->add_vertex(start_vertex);
-        // g->add_vertex(end_vertex);
-        // g->add_edge(new Edge(start_vertex, end_vertex, weight));
-
         g->update_adjacency_matrix(vertex1, vertex2, weight);
     }
 
     g->print_adjacency_matrix();
+    g->print_odd_degrees(g->find_odd_degrees());
+    g->print_dijkstras(g->perform_dijkstras());
 
     return 0;
 }
