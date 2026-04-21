@@ -57,8 +57,7 @@ int *Graph::find_odd_degrees()
     return odd_degrees;
 }
 
-// ********** LAST METHOD TO UPLOAD **********
-int *Graph::perform_dijkstras(int starting_vertex)
+Triplet **Graph::perform_dijkstras(int starting_vertex)
 {
     Triplet **triplets = new Triplet *[this->num_verticies];
     int triplet_count = 0;
@@ -71,22 +70,17 @@ int *Graph::perform_dijkstras(int starting_vertex)
     int *distances = new int[this->num_verticies + 1];
     distances[0] = this->num_verticies;
 
-    int *predecessors = new int[this->num_verticies + 1];
-    predecessors[0] = this->num_verticies;
-
     // initialize each array
     for (int i = 1; i <= this->num_verticies; i++)
     {
         all_nodes[i] = i;
         distances[i] = INT_MAX;
-        predecessors[i] = -1;
     }
 
     // distance from source vertex to source vertex = 0
     distances[starting_vertex] = 0;
 
     MinHeap *minheap = new MinHeap(all_nodes, distances);
-    int cumulative_distance_from_source = 0;
 
     while (minheap->pair_count > 0)
     {
@@ -99,9 +93,14 @@ int *Graph::perform_dijkstras(int starting_vertex)
 
         for (int i = 1; i <= immediate_neighbor_count; i++)
         {
-            
+            int vertex_extracted = min->get_vertex();
+            int vertex_adjacent = immediate_neighbors[i];
+            int edge_distance = this->adjacency_matrix[(vertex_extracted - 1) * this->num_verticies + vertex_adjacent - 1];
+            // relax will compute wheter or not to update edge_distance and predecessor, as well as increasing priority
+            minheap->relax(vertex_adjacent, edge_distance, vertex_extracted);
         }
     }
+    return triplets;
 }
 
 int *Graph::find_immediate_neighbors(int source_vertex)
@@ -153,13 +152,37 @@ void Graph::print_odd_degrees(int *odd_degrees)
     std::cout << "}" << std::endl;
 }
 
-void Graph::print_dijkstras(int starting_vertex, int *path)
+void Graph::print_dijkstras(int starting_vertex, Triplet **triplets)
 {
     std::cout << "The shortest path lengths from Node " << starting_vertex << " to all other nodes are:" << std::endl;
 
-    int path_length = path[0];
-    for (int i = 1; i <= path_length; i++)
+    // unfortunately, i am using selection sort becuase im too lazy to redo quicksort
+
+    for (int i = 0; i < this->num_verticies; i++)
     {
-        std::cout << i << " " << path[i] << " " << std::endl;
+        for (int j = i + 1; j < this->num_verticies; j++)
+        {
+            if (triplets[j]->get_vertex() == i + 1)
+            {
+                int temp_vertex = triplets[i]->get_vertex();
+                int temp_distance = triplets[i]->get_distance();
+                int temp_predecessor = triplets[i]->get_predecessor();
+
+                triplets[i]->update_vertex(triplets[j]->get_vertex());
+                triplets[i]->update_distance(triplets[j]->get_distance());
+                triplets[i]->update_predecessor(triplets[j]->get_predecessor());
+
+                triplets[j]->update_vertex(temp_vertex);
+                triplets[j]->update_distance(temp_distance);
+                triplets[j]->update_predecessor(temp_predecessor);
+            }
+        }
     }
+
+    // print each nodes distance from source
+    for (int i = 0; i < this->num_verticies; i++)
+    {
+        std::cout << "   " << i + 1 << ": " << triplets[i]->get_distance() << " ";
+    }
+    std::cout << std::endl;
 }

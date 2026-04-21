@@ -23,6 +23,11 @@ int Triplet::get_predecessor()
     return this->predecessor;
 }
 
+void Triplet::update_vertex(int new_vertex)
+{
+    this->vertex = new_vertex;
+}
+
 void Triplet::update_distance(int new_distance)
 {
     this->distance = new_distance;
@@ -35,10 +40,10 @@ void Triplet::update_predecessor(int new_predecessor)
 
 MinHeap::MinHeap(int *verticies, int *distances)
 {
-    this->pair_count = verticies[0];
+    this->triplet_count = verticies[0];
 
     // create and store each triplet
-    for (int i = 1; i <= pair_count; i++)
+    for (int i = 1; i <= triplet_count; i++)
     {
         vertex_distance_predecessor[i] = new Triplet(verticies[i], distances[i]);
     }
@@ -56,7 +61,7 @@ bool MinHeap::is_higher_priority(int index1, int index2)
 void MinHeap::heapify(int index)
 {
     // base case 1: the item is now a leaf node
-    if (index > this->pair_count / 2)
+    if (index > this->triplet_count / 2)
     {
         return;
     }
@@ -65,8 +70,8 @@ void MinHeap::heapify(int index)
     int left_child_index = index << 1;
     int right_child_index = (index << 1) + 1;
 
-    bool left_child_exits = left_child_index <= this->pair_count;
-    bool right_child_exits = right_child_index <= this->pair_count;
+    bool left_child_exits = left_child_index <= this->triplet_count;
+    bool right_child_exits = right_child_index <= this->triplet_count;
 
     int priority_index = parent_index;
 
@@ -92,7 +97,7 @@ void MinHeap::heapify(int index)
 void MinHeap::build_heap()
 {
     // only iterate through size / 2 since by definition, all leaf nodes are valid heaps
-    for (int i = pair_count / 2; i > 0; i--)
+    for (int i = triplet_count / 2; i > 0; i--)
     {
         heapify(i);
     }
@@ -104,8 +109,8 @@ bool MinHeap::is_valid_heap(int index)
     int left_child_index = index << 1;
     int right_child_index = (index << 1) + 1;
 
-    bool left_child_exists = left_child_index <= pair_count;
-    bool right_child_exists = right_child_index <= pair_count;
+    bool left_child_exists = left_child_index <= triplet_count;
+    bool right_child_exists = right_child_index <= triplet_count;
 
     // check if left subtree is a valid heap
     if (left_child_exists)
@@ -140,34 +145,35 @@ void MinHeap::swap(int index1, int index2)
 Triplet *MinHeap::extract_min()
 {
     // case 1: swap head with tail, decrement size, heapify the new head, return old head
-    if (pair_count > 1)
+    if (triplet_count > 1)
     {
-        swap(1, this->pair_count);
-        this->pair_count -= 1;
+        swap(1, this->triplet_count);
+        this->triplet_count -= 1;
         heapify(1);
-        return this->vertex_distance_predecessor[pair_count + 1];
+        return this->vertex_distance_predecessor[triplet_count + 1];
     }
 
     // case 2: decrement size, return head
-    if (pair_count == 1)
+    if (triplet_count == 1)
     {
-        pair_count -= 1;
-        return this->vertex_distance_predecessor[pair_count + 1];
+        triplet_count -= 1;
+        return this->vertex_distance_predecessor[triplet_count + 1];
     }
 
     // case 3: heap is empty
     return nullptr;
 }
 
-void MinHeap::update_triplet(int vertex, int new_distance, int new_predecessor)
+void MinHeap::relax(int vertex, int new_distance, int new_predecessor)
 {
-    for (int i = 1; i <= pair_count; i++)
+    for (int i = 1; i <= triplet_count; i++)
     {
-        if (vertex_distance_predecessor[i]->get_vertex() == vertex)
+        bool is_match = vertex_distance_predecessor[i]->get_vertex() == vertex;
+
+        if (is_match && vertex_distance_predecessor[i]->get_distance() > new_distance)
         {
             vertex_distance_predecessor[i]->update_distance(new_distance);
             vertex_distance_predecessor[i]->update_predecessor(new_predecessor);
-            // push it up the queue if necessary
             push_up(i);
             return;
         }

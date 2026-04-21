@@ -49,7 +49,7 @@ int main()
     for (int i = 1; i <= odd_degree_count; i++)
     {
         int starting_vertex = odd_degrees[i];
-        int *dijkstras_path = g->perform_dijkstras(starting_vertex);
+        Triplet **dijkstras_path = g->perform_dijkstras(starting_vertex);
         g->print_dijkstras(starting_vertex, dijkstras_path);
     }
 
