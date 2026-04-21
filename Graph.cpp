@@ -59,33 +59,6 @@ int *Graph::find_odd_degrees()
 // ********** LAST METHOD TO UPLOAD **********
 int *Graph::perform_dijkstras(int starting_vertex)
 {
-    // int num_verticies = this->num_verticies;
-    // int *weights = new int[num_verticies + 1];
-
-    // // initialize the first element as the number of verticies stored
-    // weights[0] = num_verticies;
-
-    // // initialize all weights to +inf
-    // for (int i = 0; i < num_verticies; i++)
-    // {
-    //     weights[i] = INT_MAX;
-    // }
-
-    // // the weight from starting_vertex to starting_vertex will always be 0
-    // weights[starting_vertex] = 0;
-
-    // int *immediate_neighbors = find_immediate_neighbors(starting_vertex);
-    // int neighbor_count = immediate_neighbors[0];
-
-    // // if the immediate neighbor's access distance is less
-    // for (int i = 1; i <= neighbor_count; i++)
-    // {
-    //     int position_in_matrix = ((starting_vertex - 1) * (this->num_verticies)) + (immediate_neighbors[i] - 1);
-    //     if (adjacency_matrix[position_in_matrix] < weights[immediate_neighbors[i]])
-    //     {
-    //         weights[immediate_neighbors[i]] = adjacency_matrix[position_in_matrix];
-    //     }
-    // }
 }
 
 int *Graph::find_immediate_neighbors(int source_vertex)
