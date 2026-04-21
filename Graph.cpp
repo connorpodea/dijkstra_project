@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "MinHeap.h"
 #include <iostream>
 #include <climits>
 
@@ -59,6 +60,48 @@ int *Graph::find_odd_degrees()
 // ********** LAST METHOD TO UPLOAD **********
 int *Graph::perform_dijkstras(int starting_vertex)
 {
+    Triplet **triplets = new Triplet *[this->num_verticies];
+    int triplet_count = 0;
+
+    // set of all nodes
+    int *all_nodes = new int[this->num_verticies + 1];
+    all_nodes[0] = this->num_verticies;
+
+    // set of each nodes min distance from current source node
+    int *distances = new int[this->num_verticies + 1];
+    distances[0] = this->num_verticies;
+
+    int *predecessors = new int[this->num_verticies + 1];
+    predecessors[0] = this->num_verticies;
+
+    // initialize each array
+    for (int i = 1; i <= this->num_verticies; i++)
+    {
+        all_nodes[i] = i;
+        distances[i] = INT_MAX;
+        predecessors[i] = -1;
+    }
+
+    // distance from source vertex to source vertex = 0
+    distances[starting_vertex] = 0;
+
+    MinHeap *minheap = new MinHeap(all_nodes, distances);
+    int cumulative_distance_from_source = 0;
+
+    while (minheap->pair_count > 0)
+    {
+        Triplet *min = minheap->extract_min();
+        triplets[triplet_count] = min;
+        triplet_count += 1;
+
+        int *immediate_neighbors = find_immediate_neighbors(min->get_vertex());
+        int immediate_neighbor_count = immediate_neighbors[0];
+
+        for (int i = 1; i <= immediate_neighbor_count; i++)
+        {
+            
+        }
+    }
 }
 
 int *Graph::find_immediate_neighbors(int source_vertex)

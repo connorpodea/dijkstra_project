@@ -21,9 +21,6 @@ int main()
 
     // initialize the graph
 
-    // *** testing out a different approach ***
-    // Graph *g = new Graph(num_verticies, num_edges);
-
     Graph *g = new Graph(num_verticies);
 
     while (!std::cin.eof())
