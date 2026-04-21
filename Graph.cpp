@@ -82,7 +82,7 @@ Triplet **Graph::perform_dijkstras(int starting_vertex)
 
     MinHeap *minheap = new MinHeap(all_nodes, distances);
 
-    while (minheap->pair_count > 0)
+    while (minheap->triplet_count > 0)
     {
         Triplet *min = minheap->extract_min();
         triplets[triplet_count] = min;

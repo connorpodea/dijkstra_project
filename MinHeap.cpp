@@ -40,6 +40,7 @@ void Triplet::update_predecessor(int new_predecessor)
 
 MinHeap::MinHeap(int *verticies, int *distances)
 {
+    this->vertex_distance_predecessor = new Triplet *[verticies[0]];
     this->triplet_count = verticies[0];
 
     // create and store each triplet
