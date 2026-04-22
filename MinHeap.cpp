@@ -3,6 +3,7 @@
 
 Triplet::Triplet(int vertex, int distance)
 {
+    // attributes of a "triplet"
     this->vertex = vertex;
     this->distance = distance;
     this->predecessor = -1;
@@ -49,8 +50,7 @@ MinHeap::MinHeap(int *verticies, int *distances)
         vertex_distance_predecessor[i] = new Triplet(verticies[i], distances[i]);
     }
 
-    // although initially all distances will be identical, must build heap
-    // since the source will be zero, and its location is unknown
+    // although initially all distances will be identical, must build heap since the source will be zero, and its location is unknown
     if (!is_valid_heap(1))
     {
         build_heap();
@@ -59,13 +59,14 @@ MinHeap::MinHeap(int *verticies, int *distances)
 
 MinHeap::~MinHeap()
 {
-    // delete the array
+    // destructor
     delete[] this->vertex_distance_predecessor;
 }
 
 bool MinHeap::is_higher_priority(int index1, int index2)
 {
-    return this->vertex_distance_predecessor[index1]->get_distance() < this->vertex_distance_predecessor[index2]->get_distance();
+    // priority is determined by the distance from its predecessor
+    return (this->vertex_distance_predecessor[index1]->get_distance()) < (this->vertex_distance_predecessor[index2]->get_distance());
 }
 
 void MinHeap::heapify(int index)
@@ -142,6 +143,7 @@ bool MinHeap::is_valid_heap(int index)
             return false;
     }
 
+    // sub-heap is valid
     return true;
 }
 
@@ -176,14 +178,19 @@ Triplet *MinHeap::extract_min()
 
 void MinHeap::relax(int vertex, int new_distance, int new_predecessor)
 {
+    // perform a linear search on the tree, looking for the vertex that was passed in as a parameter
     for (int i = 1; i <= triplet_count; i++)
     {
         bool is_match = vertex_distance_predecessor[i]->get_vertex() == vertex;
 
+        // conditons for "relaxing"
         if (is_match && vertex_distance_predecessor[i]->get_distance() > new_distance)
         {
+            // update its predecessor and new distance from predecessor
             vertex_distance_predecessor[i]->update_distance(new_distance);
             vertex_distance_predecessor[i]->update_predecessor(new_predecessor);
+
+            // after decreasing its distance, triplet may move up the tree. must ensure heap stays valid
             push_up(i);
             return;
         }
@@ -204,9 +211,4 @@ void MinHeap::push_up(int index)
         swap(index, index / 2);
         push_up(index / 2);
     }
-}
-
-Triplet **MinHeap::get_triplets()
-{
-    return this->vertex_distance_predecessor;
 }
