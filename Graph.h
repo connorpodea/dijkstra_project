@@ -8,6 +8,7 @@ private:
 
 public:
     Graph(int num_verticies);
+    ~Graph();
 
     void update_adjacency_matrix(int vertex1, int vertex2, int weight);
     int *find_odd_degrees();

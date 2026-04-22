@@ -14,6 +14,11 @@ Graph::Graph(int num_verticies)
     }
 }
 
+Graph::~Graph()
+{
+    delete[] this->adjacency_matrix;
+}
+
 void Graph::update_adjacency_matrix(int vertex1, int vertex2, int weight)
 {
     int v1 = vertex1 - 1;
@@ -28,7 +33,7 @@ int *Graph::find_odd_degrees()
     // the count of odd_degrees will be stored at index 1 of the resultant array
     int odd_degree_count = 0;
     int *odd_degrees = new int[this->num_verticies + 1];
-    int *degrees_of_each_vertex = new int[this->num_verticies + 1];
+    int *degrees_of_each_vertex = new int[this->num_verticies + 1]();
     int current_node = 0;
 
     for (int i = 0; i < this->size_of_adjacency_matrix; i++)
@@ -53,6 +58,10 @@ int *Graph::find_odd_degrees()
         }
     }
     odd_degrees[0] = odd_degree_count;
+
+    // delete the array
+    delete[] degrees_of_each_vertex;
+
     return odd_degrees;
 }
 
@@ -97,7 +106,16 @@ Triplet **Graph::perform_dijkstras(int starting_vertex)
             // relax will compute wheter or not to update edge_distance and predecessor, as well as increasing priority
             minheap->relax(vertex_adjacent, edge_distance + min->get_distance(), vertex_extracted);
         }
+        // delete the array
+        delete[] immediate_neighbors;
     }
+    // delete the array
+    delete[] all_nodes;
+    // delete the array
+    delete[] distances;
+    // delete the minheap
+    delete minheap;
+
     return triplets;
 }
 

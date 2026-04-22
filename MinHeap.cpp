@@ -40,8 +40,8 @@ void Triplet::update_predecessor(int new_predecessor)
 
 MinHeap::MinHeap(int *verticies, int *distances)
 {
-    this->triplet_count = verticies[0] + 1;
-    this->vertex_distance_predecessor = new Triplet *[triplet_count];
+    this->triplet_count = verticies[0];
+    this->vertex_distance_predecessor = new Triplet *[triplet_count + 1]; // offset of 1 to make parent & children access easier
 
     // create and store each triplet
     for (int i = 1; i <= triplet_count; i++)
@@ -55,6 +55,12 @@ MinHeap::MinHeap(int *verticies, int *distances)
     {
         build_heap();
     }
+}
+
+MinHeap::~MinHeap()
+{
+    // delete the array
+    delete[] this->vertex_distance_predecessor;
 }
 
 bool MinHeap::is_higher_priority(int index1, int index2)

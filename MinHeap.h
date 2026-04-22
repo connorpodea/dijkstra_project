@@ -18,6 +18,7 @@ struct MinHeap
     Triplet **vertex_distance_predecessor;
 
     MinHeap(int *vertices, int *distances);
+    ~MinHeap();
 
     bool is_higher_priority(int index1, int index2);
     void heapify(int index);
