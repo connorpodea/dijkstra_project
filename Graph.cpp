@@ -1,5 +1,4 @@
 #include "Graph.h"
-#include "MinHeap.h"
 #include <iostream>
 #include <climits>
 
@@ -29,7 +28,7 @@ int *Graph::find_odd_degrees()
     // the count of odd_degrees will be stored at index 1 of the resultant array
     int odd_degree_count = 0;
     int *odd_degrees = new int[this->num_verticies + 1];
-    int *degrees_of_each_vertex = new int[this->num_verticies];
+    int *degrees_of_each_vertex = new int[this->num_verticies + 1];
     int current_node = 0;
 
     for (int i = 0; i < this->size_of_adjacency_matrix; i++)
@@ -60,7 +59,6 @@ int *Graph::find_odd_degrees()
 Triplet **Graph::perform_dijkstras(int starting_vertex)
 {
     Triplet **triplets = new Triplet *[this->num_verticies];
-    int triplet_count = 0;
 
     // set of all nodes
     int *all_nodes = new int[this->num_verticies + 1];
@@ -85,8 +83,8 @@ Triplet **Graph::perform_dijkstras(int starting_vertex)
     while (minheap->triplet_count > 0)
     {
         Triplet *min = minheap->extract_min();
-        triplets[triplet_count] = min;
-        triplet_count += 1;
+
+        triplets[min->get_vertex() - 1] = min; // this is where the error occurs
 
         int *immediate_neighbors = find_immediate_neighbors(min->get_vertex());
         int immediate_neighbor_count = immediate_neighbors[0];
@@ -95,9 +93,9 @@ Triplet **Graph::perform_dijkstras(int starting_vertex)
         {
             int vertex_extracted = min->get_vertex();
             int vertex_adjacent = immediate_neighbors[i];
-            int edge_distance = this->adjacency_matrix[(vertex_extracted - 1) * this->num_verticies + vertex_adjacent - 1];
+            int edge_distance = this->adjacency_matrix[(vertex_extracted - 1) * this->num_verticies + (vertex_adjacent - 1)];
             // relax will compute wheter or not to update edge_distance and predecessor, as well as increasing priority
-            minheap->relax(vertex_adjacent, edge_distance, vertex_extracted);
+            minheap->relax(vertex_adjacent, edge_distance + min->get_distance(), vertex_extracted);
         }
     }
     return triplets;
@@ -149,40 +147,17 @@ void Graph::print_odd_degrees(int *odd_degrees)
     {
         std::cout << odd_degrees[i] << " ";
     }
-    std::cout << "}" << std::endl;
+    std::cout << "}" << std::endl
+              << std::endl;
 }
 
 void Graph::print_dijkstras(int starting_vertex, Triplet **triplets)
 {
     std::cout << "The shortest path lengths from Node " << starting_vertex << " to all other nodes are:" << std::endl;
-
-    // unfortunately, i am using selection sort becuase im too lazy to redo quicksort
-
-    for (int i = 0; i < this->num_verticies; i++)
-    {
-        for (int j = i + 1; j < this->num_verticies; j++)
-        {
-            if (triplets[j]->get_vertex() == i + 1)
-            {
-                int temp_vertex = triplets[i]->get_vertex();
-                int temp_distance = triplets[i]->get_distance();
-                int temp_predecessor = triplets[i]->get_predecessor();
-
-                triplets[i]->update_vertex(triplets[j]->get_vertex());
-                triplets[i]->update_distance(triplets[j]->get_distance());
-                triplets[i]->update_predecessor(triplets[j]->get_predecessor());
-
-                triplets[j]->update_vertex(temp_vertex);
-                triplets[j]->update_distance(temp_distance);
-                triplets[j]->update_predecessor(temp_predecessor);
-            }
-        }
-    }
-
     // print each nodes distance from source
     for (int i = 0; i < this->num_verticies; i++)
     {
-        std::cout << "   " << i + 1 << ": " << triplets[i]->get_distance() << " ";
+        std::cout << "   " << i + 1 << ": " << triplets[i]->get_distance() << " " << std::endl;
     }
     std::cout << std::endl;
 }

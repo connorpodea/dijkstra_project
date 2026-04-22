@@ -4,7 +4,7 @@
 Triplet::Triplet(int vertex, int distance)
 {
     this->vertex = vertex;
-    this->distance = INT_MAX;
+    this->distance = distance;
     this->predecessor = -1;
 }
 
@@ -40,8 +40,8 @@ void Triplet::update_predecessor(int new_predecessor)
 
 MinHeap::MinHeap(int *verticies, int *distances)
 {
-    this->vertex_distance_predecessor = new Triplet *[verticies[0]];
-    this->triplet_count = verticies[0];
+    this->triplet_count = verticies[0] + 1;
+    this->vertex_distance_predecessor = new Triplet *[triplet_count];
 
     // create and store each triplet
     for (int i = 1; i <= triplet_count; i++)
@@ -51,7 +51,10 @@ MinHeap::MinHeap(int *verticies, int *distances)
 
     // although initially all distances will be identical, must build heap
     // since the source will be zero, and its location is unknown
-    build_heap();
+    if (!is_valid_heap(1))
+    {
+        build_heap();
+    }
 }
 
 bool MinHeap::is_higher_priority(int index1, int index2)
@@ -195,4 +198,9 @@ void MinHeap::push_up(int index)
         swap(index, index / 2);
         push_up(index / 2);
     }
+}
+
+Triplet **MinHeap::get_triplets()
+{
+    return this->vertex_distance_predecessor;
 }

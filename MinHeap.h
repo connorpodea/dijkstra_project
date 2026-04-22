@@ -27,4 +27,5 @@ struct MinHeap
     Triplet *extract_min();
     void relax(int vertex, int new_distance, int new_predecessor);
     void push_up(int index);
+    Triplet **get_triplets();
 };

@@ -45,13 +45,25 @@ int main()
     g->print_odd_degrees(odd_degrees);
 
     // ***** task 3 *****
-    // loop through each odd-degree vertex, calling perform dijkstras and print dijkstras
     for (int i = 1; i <= odd_degree_count; i++)
     {
         int starting_vertex = odd_degrees[i];
         Triplet **dijkstras_path = g->perform_dijkstras(starting_vertex);
         g->print_dijkstras(starting_vertex, dijkstras_path);
+
+        // delete each element in the array
+        for (int j = 0; j < num_verticies; j++)
+        {
+            delete dijkstras_path[j];
+        }
+        // delete the array
+        delete[] dijkstras_path;
     }
+
+    // delete the array
+    delete[] odd_degrees;
+    // delete the graph
+    delete g;
 
     return 0;
 }
